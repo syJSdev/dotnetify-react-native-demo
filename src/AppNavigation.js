@@ -1,48 +1,77 @@
 import React from 'react';
 import { Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { StackNavigator, TabNavigator, TabBarBottom } from 'react-navigation';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import LoginScreen from './screens/LoginScreen';
 import LiveGaugeScreen from './screens/LiveGaugeScreen';
 import AFITop100Screen from './screens/AFITop100Screen';
 import AFIDetailsScreen from './screens/AFIDetailsScreen';
 
-const tabNavigation = TabNavigator(
-  {
-    AFITop100: { screen: AFITop100Screen },
-    LiveGauge: { screen: LiveGaugeScreen }
-  },
-  {
-    navigationOptions: ({ navigation }) => ({
-      tabBarIcon: ({ focused }) => {
+const MainTab = createBottomTabNavigator();
+const AppStack = createStackNavigator();
+
+const MainTabScreen = () => (
+  <MainTab.Navigator
+    screenOptions={({ route }) => ({
+      tabBarIcon: ({ focused, color, size }) => {
         let iconName;
         const isIos = Platform.OS === 'ios';
         const iosIconSuffix = focused ? '' : '-outline';
 
-        switch (navigation.state.routeName) {
+        switch (route.name) {
           case 'LiveGauge':
-            iconName = isIos ? `ios-speedometer${iosIconSuffix}` : 'md-speedometer';
+            iconName = isIos
+              ? `ios-speedometer${iosIconSuffix}`
+              : 'md-speedometer';
             break;
           case 'AFITop100':
             iconName = isIos ? `ios-list-box${iosIconSuffix}` : 'md-list-box';
             break;
         }
-        return <Ionicons name={iconName} size={28} style={{ marginBottom: -3 }} color={focused ? '#92d050' : '#ccc'} />;
-      }
-    }),
-    tabBarOptions: { activeTintColor: '#7ebc3c' },
-    tabBarComponent: TabBarBottom,
-    tabBarPosition: 'bottom',
-    swipeEnabled: false
-  }
+
+        // You can return any component that you like here!
+        return <Ionicons name={iconName} size={size} color={color} />;
+      },
+      headerShown: false,
+    })}
+    tabBarOptions={{
+      activeTintColor: 'tomato',
+      inactiveTintColor: 'gray',
+    }}>
+    <MainTab.Screen
+      name="AFITop100"
+      options={({ route }) => ({ title: route.name })}
+      component={AFITop100Screen}
+    />
+    <MainTab.Screen
+      name="LiveGauge"
+      options={({ route }) => ({ title: route.name })}
+      component={LiveGaugeScreen}
+    />
+  </MainTab.Navigator>
 );
 
-export default StackNavigator({
-  Login: { screen: LoginScreen },
-  Main: { screen: tabNavigation },
-  AFIDetails: {
-    screen: AFIDetailsScreen,
-    navigationOptions: ({ navigation }) => ({ title: `${navigation.state.params.title}` })
-  }
-});
+const AppNavigation = () => (
+  <AppStack.Navigator initialRouteName="Login">
+    <AppStack.Screen
+      name="Login"
+      options={{ headerShown: false }}
+      component={LoginScreen}
+    />
+    <AppStack.Screen
+      name="Main"
+      options={{ headerLeft: null }}
+      component={MainTabScreen}
+    />
+    <AppStack.Screen
+      name="AFIDetails"
+      options={({ route }) => ({
+        title: route.params.title,
+      })}
+      component={AFIDetailsScreen}
+    />
+  </AppStack.Navigator>
+);
+export default AppNavigation;

@@ -1,40 +1,55 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { Card, Button, FormLabel, FormInput, FormValidationMessage } from 'react-native-elements';
+import { Card, Button, Input } from 'react-native-elements';
 
 import Authentication from '../Authentication';
 
 export default class LoginScreen extends React.Component {
-  static navigationOptions = {
-    header: null
-  };
-
   constructor(props) {
     super(props);
-    this.navigate = props.navigation.navigate;
     this.state = {
-      exception: this.getNavException(props.navigation.state.params)
+      exception: this.getNavException(props.route.params),
+      validationError: '',
+      user: '',
+      password: '',
     };
   }
 
   login = () => {
-    let self = this;
+    const {
+      navigation: { navigate },
+    } = this.props;
+    const { user, password } = this.state;
     this.setState({ validationError: null, exception: null });
 
-    Authentication.signIn(this.state.user, this.state.password).then(() => self.navigate('Main')).catch(error => {
-      if (error.message == '401') this.setState({ validationError: 'Invalid user name or password' });
-      else this.setState({ exception: error.message });
-    });
+    Authentication.signIn(user, password)
+      .then(() => navigate('Main'))
+      .catch(error => {
+        if (error.message === '401') {
+          this.setState({ validationError: 'Invalid user name or password' });
+        } else {
+          this.setState({ exception: error.message });
+        }
+      });
   };
 
   getNavException = ex => {
-    if (!ex) return null;
-    return ex.name == 'UnauthorizedAccessException' || ex == 'SecurityTokenExpiredException' ? 'Access expired. Please re-login.' : ex.message;
+    if (!ex) {
+      return null;
+    }
+    return ex.name === 'UnauthorizedAccessException' ||
+      ex === 'SecurityTokenExpiredException'
+      ? 'Access expired. Please re-login.'
+      : ex.message;
+  };
+
+  handleChangeInput = (name, value) => {
+    this.setState({ [name]: value });
   };
 
   render() {
-    const handleUserInput = user => this.setState({ user: user });
-    const handlePasswordInput = pwd => this.setState({ password: pwd });
+    const { user, password } = this.state;
+
     return (
       <View style={styles.container}>
         <View style={styles.title}>
@@ -42,14 +57,29 @@ export default class LoginScreen extends React.Component {
           <Text style={styles.text}>dotNetify</Text>
         </View>
         <Card title="dotnetify-react-native-demo">
-          {this.state.exception ? <FormValidationMessage>{this.state.exception}</FormValidationMessage> : null}
-          <FormLabel>User Name</FormLabel>
-          <FormInput placeholder="Type guest..." onChangeText={handleUserInput} />
-          {this.state.validationError ? <FormValidationMessage>{this.state.validationError}</FormValidationMessage> : null}
-          <FormLabel>Password</FormLabel>
-          <FormInput secureTextEntry placeholder="Type dotnetify..." onChangeText={handlePasswordInput} />
-          {this.state.validationError ? <FormValidationMessage>{this.state.validationError}</FormValidationMessage> : null}
-          <Button buttonStyle={{ marginTop: 20 }} backgroundColor="#03A9F4" title="Sign In" onPress={() => this.login()} />
+          <Text style={styles.error_text}>{this.state.exception}</Text>
+          <Input
+            label="User Name"
+            placeholder="Type guest..."
+            errorMessage={this.state.exception}
+            value={user}
+            style={styles.form_element}
+            onChangeText={v => this.handleChangeInput('user', v)}
+          />
+          <Input
+            secureTextEntry
+            label="Password"
+            placeholder="Type dotnetify..."
+            value={password}
+            style={styles.form_element}
+            onChangeText={v => this.handleChangeInput('password', v)}
+          />
+          <Text style={styles.error_text}>{this.state.validationError}</Text>
+          <Button
+            buttonStyle={styles.form_element}
+            title="Sign In"
+            onPress={this.login}
+          />
         </Card>
       </View>
     );
@@ -60,12 +90,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingVertical: 20,
-    backgroundColor: '#ddd'
+    backgroundColor: '#ddd',
   },
   title: {
     alignItems: 'center',
     marginLeft: 20,
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   logo: {
     width: 16,
@@ -73,12 +103,21 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     backgroundColor: '#92d050',
     marginTop: 22,
-    marginRight: 6
+    marginRight: 6,
   },
   text: {
     color: '#333',
     fontWeight: 'bold',
     backgroundColor: 'transparent',
-    marginTop: 20
-  }
+    marginTop: 20,
+  },
+  error_text: {
+    color: '#e33',
+    backgroundColor: 'transparent',
+    marginTop: 20,
+    marginLeft: 20,
+  },
+  form_element: {
+    marginTop: 20,
+  },
 });

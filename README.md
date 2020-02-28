@@ -31,6 +31,10 @@ cd server
 dotnet build
 dotnet run
 ```
+when you run on emulator please run this command
+```
+adb reverse tcp:5000 tcp:5000
+```
 
 ### Android Demo
 <img src="http://dotnetify.net/content/images/react_native_android_demo.gif" height="500">

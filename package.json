@@ -5,7 +5,8 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "lint": "eslint ."
   },
   "dependencies": {
     "@react-native-community/masked-view": "0.1.5",
@@ -24,6 +25,12 @@
     "react-native-simple-gauge": "~0.1.11"
   },
   "devDependencies": {
-    "babel-preset-expo": "^8.0.0"
+    "@babel/core": "^7.6.2",
+    "@react-native-community/eslint-config": "^0.0.5",
+    "babel-preset-expo": "^7.0.0",
+    "eslint": "5.0.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-react-hooks": "^2.5.0",
+    "prettier": "^1.18.2"
   }
 }

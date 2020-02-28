@@ -3,7 +3,7 @@
     "name": "dotnetify-react-native-demo",
     "description": "This project is really great.",
     "slug": "dotnetify-react-native-demo",
-    "privacy": "private",
+    "privacy": "public",
     "sdkVersion": "36.0.0",
     "platforms": [
       "ios",
@@ -21,10 +21,7 @@
       "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true
-    }
+      "./assets/**/*"
+    ]
   }
 }

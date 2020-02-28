@@ -3,8 +3,6 @@ import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { AnimatedGaugeProgress } from 'react-native-simple-gauge';
 import dotnetify from 'dotnetify/react-native';
 
-import ScreenTracker from '../ScreenTracker';
-
 const gaugeSize = 250;
 const gaugeWidth = 20;
 const cropDegree = 45;
@@ -14,42 +12,36 @@ const textHeight = gaugeSize * (1 - cropDegree / 360) - textOffset * 2;
 
 export default class LiveGaugeScreen extends React.Component {
   static navigationOptions = {
-    title: 'Live Gauge'
+    title: 'Live Gauge',
   };
 
   constructor(props) {
     super(props);
-    this.navigate = props.navigation.navigate;
     this.state = { Value: null };
 
-    this.subscription = ScreenTracker.subscribe(this.connectLiveGauge);
+    const {
+      navigation: { navigate },
+    } = props;
+    this.vm = dotnetify.react.connect('LiveGaugeVM', this, {
+      exceptionHandler: ex => {
+        dotnetify.react.getViewModels().forEach(vm => vm.$destroy());
+        navigate('Login', ex);
+      },
+    });
   }
 
   componentWillUnmount() {
     this.vm && this.vm.$destroy();
-    ScreenTracker.unsubscribe(this.subscription);
   }
 
-  connectLiveGauge = screen => {
-    const self = this;
-    if (screen == 'LiveGauge') {
-      this.vm = dotnetify.react.connect('LiveGaugeVM', this, {
-        exceptionHandler: ex => ScreenTracker.goToLoginScreen(self.navigate, ex)
-      });
-    }
-    else if (this.vm) {
-      this.vm.$destroy();
-      this.vm = null;
-    }
-  };
-
   render() {
-    if (!this.state.Value)
+    if (!this.state.Value) {
       return (
         <View style={styles.container}>
           <ActivityIndicator size="large" />
         </View>
       );
+    }
 
     return (
       <View style={styles.container}>
@@ -60,8 +52,7 @@ export default class LiveGaugeScreen extends React.Component {
           cropDegree={cropDegree}
           tintColor="#9acfea"
           backgroundColor="#d9edf5"
-          strokeCap="circle"
-        >
+          strokeCap="circle">
           {fill => (
             <View style={styles.digitalView}>
               <Text style={styles.digital}>{this.state.Value}</Text>
@@ -78,7 +69,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   digitalView: {
     top: textOffset,
@@ -87,9 +78,9 @@ const styles = StyleSheet.create({
     height: textHeight,
     position: 'absolute',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   digital: {
-    fontSize: 80
-  }
+    fontSize: 80,
+  },
 });
