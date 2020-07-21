@@ -2398,10 +2398,10 @@ dom-walk@^0.1.0:
   resolved "https://registry.yarnpkg.com/dom-walk/-/dom-walk-0.1.1.tgz#672226dc74c8f799ad35307df936aba11acd6018"
   integrity sha1-ZyIm3HTI95mtNTB9+TaroRrNYBg=
 
-dotnetify@^3.6.1:
-  version "3.6.1"
-  resolved "https://registry.yarnpkg.com/dotnetify/-/dotnetify-3.6.1.tgz#6a7c6840feed7e59aa1862c9de95d7430995d91e"
-  integrity sha512-Xlpj48ndYYeTR1onpfEgZUVmmHjaQ9QXlcvyrFJE2T9mpgQQrSp+rnmoVjRWNGBnntyj8yNybqGNgA9xZRLTew==
+dotnetify@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/dotnetify/-/dotnetify-4.1.0.tgz#9331806cdb40819e4684696c1fdc03db96ad237b"
+  integrity sha512-7NdYh8daLOdmBF44kdZmI1N3wfgbz1xpqDcFyf2pZb/eZhW6QxhA6qfsoR9QPUt4NdbbwEwVp/GF7ASJUEV0rg==
   dependencies:
     "@aspnet/signalr" "~1.1.4"
     jquery-deferred "~0.3.1"
