@@ -1561,7 +1561,7 @@ array-unique@^0.3.2:
   resolved "https://registry.yarnpkg.com/array-unique/-/array-unique-0.3.2.tgz#a894b75d4bc4f6cd679ef3244a9fd8f46ae2d428"
   integrity sha1-qJS3XUvE9s1nnvMkSp/Y9Gri1Cg=
 
-art@^0.10.0, art@^0.10.2:
+art@^0.10.0:
   version "0.10.3"
   resolved "https://registry.yarnpkg.com/art/-/art-0.10.3.tgz#b01d84a968ccce6208df55a733838c96caeeaea2"
   integrity sha512-HXwbdofRTiJT6qZX/FnchtldzJjS3vkLJxQilc3Xj+ma2MXjY4UAyQ0ls1XZYVnDvVIBiFZbC6QsvtW86TD6tQ==
@@ -5251,12 +5251,10 @@ react-native-screens@2.0.0-alpha.12:
   dependencies:
     debounce "^1.2.0"
 
-react-native-simple-gauge@~0.1.11:
-  version "0.1.12"
-  resolved "https://registry.yarnpkg.com/react-native-simple-gauge/-/react-native-simple-gauge-0.1.12.tgz#280986add592281061de30ed02845b789aebf374"
-  integrity sha512-DELBxhjOExeJk+EWe4TqO4Xn1YWmDFtLH9Ufgt/zGCY2k+K7cozhqmw9k1cOf/vwDQZNVmetjCWoFZFHv3rtrQ==
-  dependencies:
-    art "^0.10.2"
+react-native-simple-gauge@~0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/react-native-simple-gauge/-/react-native-simple-gauge-0.3.1.tgz#33db0824ce8daade3e5602e0c704826c0f287eb0"
+  integrity sha512-aOf18FeSkKnUM+AblnZhSoUZLA1tdCYlbA5SG06OdcCFpf0gtPwQ+bZtqmVztBq5j2Pg2o4UNxLw3u+/W2Jefg==
 
 react-native-status-bar-height@^2.2.0:
   version "2.4.0"
